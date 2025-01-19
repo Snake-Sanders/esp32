@@ -53,11 +53,17 @@ unsigned int colour = 0;
 void setup(void) {
   //Serial.begin(115200);
   tft.init();
-  tft.setRotation(1);
-  tft.fillScreen(TFT_BLACK);
 
+  // adjustemts for TTGo-Display
+  tft.setRotation(0);
+  tft.writecommand(TFT_MADCTL);
+  tft.writedata(0x48);
+  tft.invertDisplay(true);
+
+  tft.fillScreen(TFT_BLACK);
   tft.setTextSize(1);
   tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+  tft.drawRect(0, 0, tft.width(), tft.height(), TFT_GREEN);
 
   targetTime = millis() + 1000;
 }
