@@ -12,7 +12,7 @@ use esp_idf_svc::hal::spi::SpiDriver;
 use esp_idf_svc::hal::spi::SpiDriverConfig;
 use esp_idf_svc::hal::spi::SPI2;
 use esp_idf_svc::hal::units::Hertz;
-use mipidsi::error::Error as DisplayError;
+//use mipidsi::error::Error as DisplayError;
 use mipidsi::options::ColorInversion;
 use mipidsi::{models::ST7789, Builder};
 use std::error::Error;
