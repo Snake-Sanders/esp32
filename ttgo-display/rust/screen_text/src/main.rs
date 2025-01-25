@@ -1,5 +1,6 @@
 mod tt_display;
 
+use esp_idf_svc::hal::peripherals::Peripherals;
 use embedded_graphics::pixelcolor::Rgb565;
 use embedded_graphics::prelude::RgbColor;
 use std::error::Error;
@@ -14,7 +15,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     log::set_max_level(log::LevelFilter::Debug);
     log::info!("Starting display...v1");
 
-    let peripherals = esp_idf_svc::hal::peripherals::Peripherals::take()?;
+    let peripherals = Peripherals::take()?;
     let mut display = tt_display::init(peripherals)?;
 
     // Clear the display to red
