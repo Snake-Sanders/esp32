@@ -58,7 +58,7 @@ pub fn init(peripherals: Peripherals) -> Result<TtDisplay<'static>, Box<dyn Erro
     // Initialize GPIO
     let rst = PinDriver::output(rst)?;
     let dc = PinDriver::output(dc)?;
-    let mut bl = PinDriver::output(bl)?;
+    let bl = PinDriver::output(bl)?;
     let sdi: Option<AnyIOPin> = None;
 
     let dma = Dma::Auto(240 * 135 * 2 + 8);
@@ -89,10 +89,12 @@ pub fn init(peripherals: Peripherals) -> Result<TtDisplay<'static>, Box<dyn Erro
         .init(&mut delay)
         .unwrap();
 
-    bl.set_high()?;
-
-    Ok(TtDisplay {
+    let mut display_struct = TtDisplay {
         display,
         backlight: bl,
-    })
+    };
+
+    display_struct.set_backlight(true)?;
+
+    Ok(display_struct)
 }
