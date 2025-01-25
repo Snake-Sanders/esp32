@@ -17,7 +17,7 @@ use mipidsi::{models::ST7789, Builder};
 use mipidsi::error::Error as DisplayError;
 use std::error::Error;
 
-pub struct Display<'a> {
+pub struct TT_Display<'a> {
     pub(crate) display: mipidsi::Display<
         SPIInterface<
             SpiDeviceDriver<'static>,
@@ -28,7 +28,7 @@ pub struct Display<'a> {
     pub(crate) backlight: PinDriver<'a, AnyIOPin, esp_idf_svc::hal::gpio::Output>,
 }
 
-impl<'a> Display<'a> {
+impl<'a> TT_Display<'a> {
     pub fn clear(&mut self, color: Rgb565) -> Result<(), DisplayError> {
         self.display.clear(color)?;
         Ok(())
@@ -44,7 +44,7 @@ impl<'a> Display<'a> {
     }
 }
 
-pub fn init(peripherals: Peripherals) -> Result<Display<'static>, Box<dyn Error>> {
+pub fn init(peripherals: Peripherals) -> Result<TT_Display<'static>, Box<dyn Error>> {
     let mut delay = Ets;
 
     // Pin definitions
@@ -91,7 +91,7 @@ pub fn init(peripherals: Peripherals) -> Result<Display<'static>, Box<dyn Error>
 
     bl.set_high()?;  // Initialize backlight to on
 
-    Ok(Display {
+    Ok(TT_Display {
         display,
         backlight: bl,
     })

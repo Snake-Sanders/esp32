@@ -1,4 +1,4 @@
-mod display;
+mod tt_display;
 
 use embedded_graphics::pixelcolor::Rgb565;
 use embedded_graphics::prelude::RgbColor;
@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     log::info!("Starting display...v1");
 
     let peripherals = esp_idf_svc::hal::peripherals::Peripherals::take()?;
-    let mut display = display::init(peripherals)?;
+    let mut display = tt_display::init(peripherals)?;
 
     // Clear the display to red
     display.clear(Rgb565::RED.into()).unwrap();
