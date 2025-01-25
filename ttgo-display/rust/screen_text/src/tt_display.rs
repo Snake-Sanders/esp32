@@ -1,8 +1,8 @@
 use display_interface_spi::SPIInterface;
 use embedded_graphics::pixelcolor::Rgb565;
-use esp_idf_svc::hal::gpio::Output;
 use esp_idf_svc::hal::delay::Ets;
 use esp_idf_svc::hal::gpio::AnyIOPin;
+use esp_idf_svc::hal::gpio::Output;
 use esp_idf_svc::hal::gpio::PinDriver;
 use esp_idf_svc::hal::peripherals::Peripherals;
 use esp_idf_svc::hal::spi::config::MODE_3;
@@ -19,10 +19,7 @@ use std::error::Error;
 
 pub struct TtDisplay<'a> {
     pub(crate) display: mipidsi::Display<
-        SPIInterface<
-            SpiDeviceDriver<'static, SpiDriver<'static>>,
-            PinDriver<'a, AnyIOPin, Output>,
-        >,
+        SPIInterface<SpiDeviceDriver<'static, SpiDriver<'static>>, PinDriver<'a, AnyIOPin, Output>>,
         ST7789,
         PinDriver<'a, AnyIOPin, Output>,
     >,
@@ -91,7 +88,7 @@ pub fn init(peripherals: Peripherals) -> Result<TtDisplay<'static>, Box<dyn Erro
         .init(&mut delay)
         .unwrap();
 
-    bl.set_high()?; // Initialize backlight to on
+    bl.set_high()?;
 
     Ok(TtDisplay {
         display,
