@@ -12,29 +12,30 @@ use esp_idf_svc::hal::spi::SpiDriver;
 use esp_idf_svc::hal::spi::SpiDriverConfig;
 use esp_idf_svc::hal::spi::SPI2;
 use esp_idf_svc::hal::units::Hertz;
+use mipidsi::error::Error as DisplayError;
 use mipidsi::options::ColorInversion;
 use mipidsi::{models::ST7789, Builder};
-use mipidsi::error::Error as DisplayError;
 use std::error::Error;
 
-pub struct TT_Display<'a> {
+pub struct TtDisplay<'a> {
     pub(crate) display: mipidsi::Display<
         SPIInterface<
             SpiDeviceDriver<'static>,
             PinDriver<'a, AnyIOPin, esp_idf_svc::hal::gpio::Output>,
         >,
         ST7789,
+        PinDriver<'a, AnyIOPin, esp_idf_svc::hal::gpio::Output>,
     >,
     pub(crate) backlight: PinDriver<'a, AnyIOPin, esp_idf_svc::hal::gpio::Output>,
 }
 
-impl<'a> TT_Display<'a> {
-    pub fn clear(&mut self, color: Rgb565) -> Result<(), DisplayError> {
+impl<'a> TtDisplay<'a> {
+    pub fn clear(&mut self, color: Rgb565) -> Result<(), Box<dyn Error>> {
         self.display.clear(color)?;
         Ok(())
     }
 
-    pub fn set_backlight(&mut self, on: bool) -> Result<(), DisplayError> {
+    pub fn set_backlight(&mut self, on: bool) -> Result<(), Box<dyn Error>> {
         if on {
             self.backlight.set_high()?;
         } else {
@@ -44,7 +45,7 @@ impl<'a> TT_Display<'a> {
     }
 }
 
-pub fn init(peripherals: Peripherals) -> Result<TT_Display<'static>, Box<dyn Error>> {
+pub fn init(peripherals: Peripherals) -> Result<TtDisplay<'static>, Box<dyn Error>> {
     let mut delay = Ets;
 
     // Pin definitions
@@ -89,9 +90,9 @@ pub fn init(peripherals: Peripherals) -> Result<TT_Display<'static>, Box<dyn Err
         .init(&mut delay)
         .unwrap();
 
-    bl.set_high()?;  // Initialize backlight to on
+    bl.set_high()?; // Initialize backlight to on
 
-    Ok(TT_Display {
+    Ok(TtDisplay {
         display,
         backlight: bl,
     })
