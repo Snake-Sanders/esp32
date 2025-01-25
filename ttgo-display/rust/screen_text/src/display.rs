@@ -30,7 +30,17 @@ pub struct Display<'a> {
 
 impl<'a> Display<'a> {
     pub fn clear(&mut self, color: Rgb565) -> Result<(), DisplayError> {
-        self.display.clear(color)
+        self.display.clear(color)?;
+        Ok(())
+    }
+
+    pub fn set_backlight(&mut self, on: bool) -> Result<(), DisplayError> {
+        if on {
+            self.backlight.set_high()?;
+        } else {
+            self.backlight.set_low()?;
+        }
+        Ok(())
     }
 }
 
@@ -79,7 +89,7 @@ pub fn init(peripherals: Peripherals) -> Result<Display<'static>, Box<dyn Error>
         .init(&mut delay)
         .unwrap();
 
-    bl.set_high()?;
+    bl.set_high()?;  // Initialize backlight to on
 
     Ok(Display {
         display,
