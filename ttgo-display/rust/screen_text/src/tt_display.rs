@@ -16,14 +16,15 @@ use esp_idf_svc::hal::units::Hertz;
 use mipidsi::options::ColorInversion;
 use mipidsi::{models::ST7789, Builder};
 use std::error::Error;
+use esp_idf_svc::hal::gpio::{Gpio16, Gpio23, Gpio4};
 
 pub struct TtDisplay<'a> {
     pub(crate) display: mipidsi::Display<
-        SPIInterface<SpiDeviceDriver<'static, SpiDriver<'static>>, PinDriver<'a, AnyIOPin, Output>>,
+        SPIInterface<SpiDeviceDriver<'static, SpiDriver<'static>>, PinDriver<'a, Gpio16, Output>>,
         ST7789,
-        PinDriver<'a, AnyIOPin, Output>,
+        PinDriver<'a, Gpio23, Output>,
     >,
-    pub(crate) backlight: PinDriver<'a, AnyIOPin, Output>,
+    pub(crate) backlight: PinDriver<'a, Gpio4, Output>,
 }
 
 impl<'a> TtDisplay<'a> {
