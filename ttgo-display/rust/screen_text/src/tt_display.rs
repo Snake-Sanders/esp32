@@ -20,7 +20,7 @@ use std::error::Error;
 pub struct TtDisplay<'a> {
     pub(crate) display: mipidsi::Display<
         SPIInterface<
-            SpiDeviceDriver<'static>,
+            SpiDeviceDriver<'static, SpiDriver<'static>>,
             PinDriver<'a, AnyIOPin, esp_idf_svc::hal::gpio::Output>,
         >,
         ST7789,
@@ -30,8 +30,9 @@ pub struct TtDisplay<'a> {
 }
 
 impl<'a> TtDisplay<'a> {
-    pub fn clear(&mut self, color: Rgb565) -> Result<(), Box<dyn Error>> {
-        self.display.clear(color)?;
+    pub fn clear(&mut self, _color: Rgb565) -> Result<(), Box<dyn Error>> {
+        // todo
+        //self.display.clear(color)?;
         Ok(())
     }
 
