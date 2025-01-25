@@ -14,6 +14,7 @@ use esp_idf_svc::hal::spi::SPI2;
 use esp_idf_svc::hal::units::Hertz;
 use mipidsi::options::ColorInversion;
 use mipidsi::{models::ST7789, Builder};
+use mipidsi::error::Error as DisplayError;
 use std::error::Error;
 
 pub struct Display<'a> {
@@ -28,7 +29,7 @@ pub struct Display<'a> {
 }
 
 impl<'a> Display<'a> {
-    pub fn clear(&mut self, color: Rgb565) -> Result<(), mipidsi::Error> {
+    pub fn clear(&mut self, color: Rgb565) -> Result<(), DisplayError> {
         self.display.clear(color)
     }
 }
