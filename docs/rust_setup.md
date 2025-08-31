@@ -4,6 +4,24 @@ reference `https://lilymara.xyz/posts/2023/01/images-esp32/`
 
 Install cross compiler target
 
+For ESP32 there are two micros, Xtensa and RISCV. The newer variants come with
+RISCV. To compile for these target a cross compiler is needed, this is `Espup`.
+
+## Espup
+
+Espup requirements
+
+check if the following packages are installed with `cargo install --list`
+
+```sh
+cargo install ldproxy
+```
+
+Esp-IDF is also a dependency but this gets installed automatically when building
+`std`.
+
+- Using a docker image can same some time troubleshooting incompatible packages:
+
 ```sh
 rustup target install riscv32imc-unknown-none-elf
 ```
@@ -18,6 +36,7 @@ cargo install cargo-espflash
 cargo install cargo-generate
 cargo install ldproxy
 ```
+
 About [espup](https://docs.esp-rs.org/book/installation/riscv-and-xtensa.html)
 
 - checkpoint
@@ -35,11 +54,11 @@ to avoid polluting `.zshrc`, the variables are set in `.env`
 
  '. /Users/mac/export-esp.sh'
 This step must be done every time you open a new terminal.
-See other methods for setting the environment in: 
+See other methods for setting the environment in:
 
-https://esp-rs.github.io/book/installation/riscv-and-xtensa.html#3-set-up-the-environment-variables
+<https://esp-rs.github.io/book/installation/riscv-and-xtensa.html#3-set-up-the-environment-variables>
 
-## Crates 
+## Crates
 
 Repositories naming convetions
 
@@ -48,7 +67,7 @@ Repositories naming convetions
 
 `esp-idf-sys` access to drivers, Wi-Fi, etc.
 `embedded-svc` abstraction for embedded services (WiFi, Network, Httpd, Logging, etc.).
-`esp-idf-hal` implementation of the `embedded-hal`. 
+`esp-idf-hal` implementation of the `embedded-hal`.
 `esp-idf-svc` implementation of `embedded-svc`.
 
 ### Stack
@@ -61,9 +80,9 @@ Repositories naming convetions
 
 ### Graphic library
 
-[embedded-graphics] (https://github.com/embedded-graphics/embedded-graphics)
+[embedded-graphics] (<https://github.com/embedded-graphics/embedded-graphics>)
 [mipidsi](https://github.com/almindor/mipidsi)
-See [Troubleshooting](https://github.com/almindor/mipidsi/blob/master/docs/TROUBLESHOOTING.md) 
+See [Troubleshooting](https://github.com/almindor/mipidsi/blob/master/docs/TROUBLESHOOTING.md)
 wrong color and inversion
 
 ## Example
@@ -72,10 +91,10 @@ wrong color and inversion
 cargo generate https://github.com/esp-rs/esp-idf-template cargo
 ```
 
-if the command `cargo run` does not work, 
+if the command `cargo run` does not work,
 try build and communicate manually.
 
-- connecting to the board 
+- connecting to the board
 
 ```sh
 cargo build
@@ -114,6 +133,4 @@ I (444) esp_display: Hello, world!
 
 The tool chaing can be used directly on a Docker container:
 
-https://hub.docker.com/r/espressif/idf-rust/tags
-
-
+<https://hub.docker.com/r/espressif/idf-rust/tags>
