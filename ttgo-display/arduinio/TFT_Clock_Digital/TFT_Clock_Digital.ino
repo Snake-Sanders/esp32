@@ -33,22 +33,42 @@ code	color
 
  */
 
-#include <TFT_eSPI.h> // Hardware-specific library
+#include <TFT_eSPI.h>  // Hardware-specific library
 #include <SPI.h>
 
 #define TFT_GREY 0x5AEB
 
-TFT_eSPI tft = TFT_eSPI();       // Invoke custom library
+TFT_eSPI tft = TFT_eSPI();  // Invoke custom library
 
-uint32_t targetTime = 0;                    // for next 1 second timeout
+void test_display_bounds() {
+    tft.fillScreen(TFT_BLACK);  // Clear screen
 
-static uint8_t conv2d(const char* p); // Forward declaration needed for IDE 1.6.x
+    // Draw a RED cross at (0,0) - Check if it's visible
+    tft.drawFastVLine(0, 0, 4, TFT_RED);  // Vertical line
+    tft.drawFastHLine(0, 0, 4, TFT_RED);  // Horizontal line
 
-uint8_t hh = conv2d(__TIME__), mm = conv2d(__TIME__ + 3), ss = conv2d(__TIME__ + 6); // Get H, M, S from compile time
+    // Draw a GREEN rectangle from (0,0) to (135,240) to find the real width/height
+    tft.drawRect(0, 0, 135, 240, TFT_GREEN);
 
-byte omm = 99, oss = 99;
-byte xcolon = 0, xsecs = 0;
-unsigned int colour = 0;
+
+    // Print coordinates at edges
+    tft.setTextColor(TFT_WHITE, TFT_BLACK);
+    tft.setTextSize(2);
+
+    tft.setCursor(5, 5);
+    tft.print("(0,0)");
+
+    tft.setCursor(100, 5);
+    tft.print("(W,0)");
+
+    tft.setCursor(5, 220);
+    tft.print("(0,H)");
+
+    tft.setCursor(100, 220);
+    tft.print("(W,H)");
+
+    Serial.println("Test pattern drawn. Check display boundaries.");
+}
 
 void setup(void) {
   //Serial.begin(115200);
@@ -57,84 +77,28 @@ void setup(void) {
   // adjustemts for TTGo-Display
   tft.setRotation(0);
   tft.writecommand(TFT_MADCTL);
-  tft.writedata(0x48);
-  tft.invertDisplay(true);
-
-  tft.fillScreen(TFT_BLACK);
-  tft.setTextSize(1);
-  tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-  tft.drawRect(0, 0, tft.width(), tft.height(), TFT_GREEN);
-
-  targetTime = millis() + 1000;
+  tft.writedata(0x08);
+  tft.invertDisplay(false);
 }
 
 void loop() {
-  if (targetTime < millis()) {
-    // Set next update for 1 second later
-    targetTime = millis() + 1000;
+  
+  tft.drawRect(4, 0, tft.width() - 10, tft.height() -10, TFT_GREEN);
 
-    // Adjust the time values by adding 1 second
-    ss++;              // Advance second
-    if (ss == 60) {    // Check for roll-over
-      ss = 0;          // Reset seconds to zero
-      omm = mm;        // Save last minute time for display update
-      mm++;            // Advance minute
-      if (mm > 59) {   // Check for roll-over
-        mm = 0;
-        hh++;          // Advance hour
-        if (hh > 23) { // Check for 24hr roll-over (could roll-over on 13)
-          hh = 0;      // 0 for 24 hour clock, set to 1 for 12 hour clock
-        }
-      }
-    }
+  delay(5000);
+  tft.fillScreen(TFT_BLACK);
+    // Draw boundary lines to detect real edges
+    tft.drawFastHLine(0, 120, 135, TFT_BLUE);  // Center horizontal
+    tft.drawFastVLine(67, 0, 240, TFT_RED);   // Center vertical
 
-
-    // Update digital time
-    int xpos = 0;
-    int ypos = 85; // Top left corner ot clock text, about half way down
-    int ysecs = ypos + 24;
-
-    if (omm != mm) { // Redraw hours and minutes time every minute
-      omm = mm;
-      // Draw hours and minutes
-      if (hh < 10) xpos += tft.drawChar('0', xpos, ypos, 8); // Add hours leading zero for 24 hr clock
-      xpos += tft.drawNumber(hh, xpos, ypos, 8);             // Draw hours
-      xcolon = xpos; // Save colon coord for later to flash on/off later
-      xpos += tft.drawChar(':', xpos, ypos - 8, 8);
-      if (mm < 10) xpos += tft.drawChar('0', xpos, ypos, 8); // Add minutes leading zero
-      xpos += tft.drawNumber(mm, xpos, ypos, 8);             // Draw minutes
-      xsecs = xpos; // Sae seconds 'x' position for later display updates
-    }
-    if (oss != ss) { // Redraw seconds time every second
-      oss = ss;
-      xpos = xsecs;
-
-      if (ss % 2) { // Flash the colons on/off
-        tft.setTextColor(0x39C4, TFT_BLACK);        // Set colour to grey to dim colon
-        tft.drawChar(':', xcolon, ypos - 8, 8);     // Hour:minute colon
-        xpos += tft.drawChar(':', xsecs, ysecs, 6); // Seconds colon
-        tft.setTextColor(TFT_YELLOW, TFT_BLACK);    // Set colour back to yellow
-      }
-      else {
-        tft.drawChar(':', xcolon, ypos - 8, 8);     // Hour:minute colon
-        xpos += tft.drawChar(':', xsecs, ysecs, 6); // Seconds colon
-      }
-
-      //Draw seconds
-      if (ss < 10) xpos += tft.drawChar('0', xpos, ysecs, 6); // Add leading zero
-      tft.drawNumber(ss, xpos, ysecs, 6);                     // Draw seconds
-    }
-  }
+  delay(5000);
+  tft.fillScreen(TFT_BLACK);
+    tft.setCursor(5, 5, 4);
+    tft.print("A");
+    tft.setCursor(20, 20, 4);
+    tft.print("B");
+    tft.setCursor(40, 40, 4);
+    tft.print("C");
+    delay(5000);
+  tft.fillScreen(TFT_BLACK);
 }
-
-
-// Function to extract numbers from compile time string
-static uint8_t conv2d(const char* p) {
-  uint8_t v = 0;
-  if ('0' <= *p && *p <= '9')
-    v = *p - '0';
-  return 10 * v + *++p - '0';
-}
-
-
-
