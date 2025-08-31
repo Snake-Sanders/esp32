@@ -31,6 +31,7 @@ Features
 ## SPI configuration
 
 |Pin|Function|Notes|
+|---|--------|-----|
 |MOSI|Master Out Slave In|Data sent from ESP32 to display|
 |SCLK|Serial Clock|Clock signal to synchronize communication|
 |CS|Chip Select|Selects the device (optional, can be tied low)|
