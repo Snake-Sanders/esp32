@@ -20,7 +20,56 @@ cargo install ldproxy
 Esp-IDF is also a dependency but this gets installed automatically when building
 `std`.
 
+### Update
+
+If the tool was not previously installed then skip this section and read
+**Install**.
+
+If you are now updating the tool version then it is probable this might prompt
+you some errors.
+
+Make sure you are not in the ESP project directory. These directory have
+some environment variables overwrite. Best is to work in $HOME. An indication
+of this is the error 17.
+
+The error **"File exists (os error 17)"** during the installation of the Xtensa
+LLVM toolchain indicates that a symlink already exists at the target location,
+preventing the creation of a new one.
+
+To solve this delete the link from the previous installation:
+
+`rm ~/.espup/esp-clang`
+
+Then install
+
+```sh
+espup install
+
+[info]: Installing the Espressif Rust ecosystem
+[info]: Checking Rust installation
+[info]: Installing RISC-V Rust targets ('riscv32imc-unknown-none-elf', 'riscv32imac-unknown-none-elf' and 'riscv32imafc-unknown-none-elf') for 'stable' toolchain
+[warn]: Previous installation of LLVM exists in: '/Users/mac/.rustup/toolchains/esp/xtensa-esp32-elf-clang/esp-19.1.2_20250225'. Reusing this installation
+[info]: Installing GCC (xtensa-esp-elf)
+[info]: Creating symlink between '/Users/mac/.rustup/toolchains/esp/xtensa-esp32-elf-clang/esp-19.1.2_20250225/esp-clang/lib' and '/Users/mac/.espup/esp-clang'
+[warn]: Previous installation of GCC exists in: '/Users/mac/.rustup/toolchains/esp/xtensa-esp-elf/esp-14.2.0_20240906'. Reusing this installation
+[warn]: Failed to detect version of Xtensa Rust, reinstalling it
+[info]: Uninstalling Xtensa Rust toolchain
+[info]: Installing Xtensa Rust 1.88.0.0 toolchain
+[info]: All downloads complete
+...
+
+To get started, you need to set up some environment variables by running: 
+  '. /Users/mac/export-esp.sh'
+This step must be done every time you open a new terminal.
+See other methods for setting the environment in 
+https://esp-rs.github.io/book/installation/riscv-and-xtensa.html#3-set-up-the-environment-variables
+```
+
 - Using a docker image can same some time troubleshooting incompatible packages:
+
+### Install
+
+(installing this target might no longer be needed)
 
 ```sh
 rustup target install riscv32imc-unknown-none-elf
@@ -34,7 +83,6 @@ espup install
 
 cargo install cargo-espflash
 cargo install cargo-generate
-cargo install ldproxy
 ```
 
 About [espup](https://docs.esp-rs.org/book/installation/riscv-and-xtensa.html)
@@ -47,7 +95,7 @@ xtensa-esp32-elf-gcc --version
 xtensa-esp-elf-gcc (crosstool-NG esp-14.2.0_20240906) 14.2.0
 ```
 
-**Environment varaiables**
+**Environment variables**
 
 `espup` requires environment variables from `~/export-esp.sh`
 to avoid polluting `.zshrc`, the variables are set in `.env`
