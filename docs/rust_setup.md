@@ -28,9 +28,10 @@ If the tool was not previously installed then skip this section and read
 If you are now updating the tool version then it is probable this might prompt
 you some errors.
 
-Make sure you are not in the ESP project directory. These directory have
-some environment variables overwrite. Best is to work in $HOME. An indication
-of this is the error 17.
+Make sure you are not in the ESP project directory. These directories have
+some environment variables overwrite. Best is to work in $HOME.
+
+An indication of this case is the error 17.
 
 The error **"File exists (os error 17)"** during the installation of the Xtensa
 LLVM toolchain indicates that a symlink already exists at the target location,
