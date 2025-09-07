@@ -109,7 +109,7 @@ See other methods for setting the environment in:
 
 ## Crates
 
-Repositories naming convetions
+Repositories naming conventions
 
 - `esp-*` are focused on `no_std` approach
 - `esp-idf-*` are focused on `std` approach
@@ -133,6 +133,49 @@ Repositories naming convetions
 [mipidsi](https://github.com/almindor/mipidsi)
 See [Troubleshooting](https://github.com/almindor/mipidsi/blob/master/docs/TROUBLESHOOTING.md)
 wrong color and inversion
+
+## Example: Building using the template generator
+
+The template generator will fetch the template project from github and guide
+you through the basic options to create your project.
+
+Here is an example to create a project for ESP32 (old HW version) with STD.
+
+```sh
+cargo generate esp-rs/esp-idf-template cargo
+
+⚠️   Favorite `esp-rs/esp-idf-template` not found in config, using it as a git
+repository: <https://github.com/esp-rs/esp-idf-template.git>
+🤷   Project Name: hello_world
+🔧   Destination: /Users/mac/src/github/esp32/ttgo-display/rust/hello_world ...
+🔧   project-name: hello_world ...
+🔧   Generating template ...
+✔ 🤷   Which MCU to target? · esp32
+✔ 🤷   Configure advanced template options? · true
+✔ 🤷   ESP-IDF version (master = UNSTABLE) · v5.3
+✔ 🤷   Configure project to use Dev Containers (VS Code and GitHub 
+Codespaces)? · false
+✔ 🤷   Configure project to support Wokwi simulation with Wokwi VS Code 
+extension? · true
+✔ 🤷   Add CI files for GitHub Action? · false
+[ 1/14]   Done: .cargo/config.toml
+[ 2/14]   Done: .cargo
+[ 3/14]   Done: .gitignore
+[ 4/14]   Done: .vscode/launch.json
+[ 5/14]   Done: .vscode
+[ 6/14]   Done: Cargo.toml
+[ 7/14]   Done: build.rs
+[ 8/14]   Done: diagram.json
+[ 9/14]   Ignored: pre-script.rhai
+[10/14]   Done: rust-toolchain.toml
+[11/14]   Done: sdkconfig.defaults
+[12/14]   Done: src/main.rs
+[13/14]   Done: src
+[14/14]   Done: wokwi.toml
+🔧   Moving generated files into: `/Users/mac/src/github/esp32/ttgo-display/rust/hello_world`...
+🔧   Initializing a fresh Git repository
+✨   Done! New project created /Users/mac/src/github/esp32/ttgo-display/rust/hello_world
+```
 
 ## Example
 
