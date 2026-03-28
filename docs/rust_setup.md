@@ -1,15 +1,25 @@
 # Rust Setup
 
-reference `https://lilymara.xyz/posts/2023/01/images-esp32/`
+The setup is nicely explained in the [Rust on ESP book](https://docs.espressif.com/projects/rust/book/getting-started/toolchain.html) chapter **getting-started**.
 
 Install cross compiler target
 
 For ESP32 there are two micros, Xtensa and RISCV. The newer variants come with
 RISCV. To compile for these target a cross compiler is needed, this is `Espup`.
+About [espup](https://docs.esp-rs.org/book/installation/riscv-and-xtensa.html).
+
+> The old ESP32-TTGO uses Xtensa.
+
+Some packages can be installed with `cargo-binstall`
+
+```sh
+brew install cargo-binstall
+```
 
 ## Espup
 
-Espup requirements
+Check if there are changes in the installation:
+Visit <https://github.com/esp-rs/espup>
 
 check if the following packages are installed with `cargo install --list`
 
@@ -20,92 +30,32 @@ cargo install ldproxy
 Esp-IDF is also a dependency but this gets installed automatically when building
 `std`.
 
-### Update
-
-If the tool was not previously installed then skip this section and read
-**Install**.
-
-If you are now updating the tool version then it is probable this might prompt
-you some errors.
-
-Make sure you are not in the ESP project directory. These directories have
-some environment variables overwrite. Best is to work in $HOME.
-
-An indication of this case is the error 17.
-
-The error **"File exists (os error 17)"** during the installation of the Xtensa
-LLVM toolchain indicates that a symlink already exists at the target location,
-preventing the creation of a new one.
-
-To solve this delete the link from the previous installation:
-
-`rm ~/.espup/esp-clang`
-
-Then install
+### Installation
 
 ```sh
+cargo install espup --locked
 espup install
-
-[info]: Installing the Espressif Rust ecosystem
-[info]: Checking Rust installation
-[info]: Installing RISC-V Rust targets ('riscv32imc-unknown-none-elf', 'riscv32imac-unknown-none-elf' and 'riscv32imafc-unknown-none-elf') for 'stable' toolchain
-[warn]: Previous installation of LLVM exists in: '/Users/mac/.rustup/toolchains/esp/xtensa-esp32-elf-clang/esp-19.1.2_20250225'. Reusing this installation
-[info]: Installing GCC (xtensa-esp-elf)
-[info]: Creating symlink between '/Users/mac/.rustup/toolchains/esp/xtensa-esp32-elf-clang/esp-19.1.2_20250225/esp-clang/lib' and '/Users/mac/.espup/esp-clang'
-[warn]: Previous installation of GCC exists in: '/Users/mac/.rustup/toolchains/esp/xtensa-esp-elf/esp-14.2.0_20240906'. Reusing this installation
-[warn]: Failed to detect version of Xtensa Rust, reinstalling it
-[info]: Uninstalling Xtensa Rust toolchain
-[info]: Installing Xtensa Rust 1.88.0.0 toolchain
-[info]: All downloads complete
-...
-
-To get started, you need to set up some environment variables by running: 
-  '. /Users/mac/export-esp.sh'
-This step must be done every time you open a new terminal.
-See other methods for setting the environment in 
-https://esp-rs.github.io/book/installation/riscv-and-xtensa.html#3-set-up-the-environment-variables
-```
-
-- Using a docker image can same some time troubleshooting incompatible packages:
-
-### Install
-
-(installing this target might no longer be needed)
-
-```sh
-rustup target install riscv32imc-unknown-none-elf
-```
-
-```sh
-cargo install espup
-espup install
-
-# at this moment setup the environment variables
-
-cargo install cargo-espflash
-cargo install cargo-generate
-```
-
-About [espup](https://docs.esp-rs.org/book/installation/riscv-and-xtensa.html)
-
-- checkpoint
-
-```sh
-xtensa-esp32-elf-gcc --version
-
-xtensa-esp-elf-gcc (crosstool-NG esp-14.2.0_20240906) 14.2.0
 ```
 
 **Environment variables**
 
 `espup` requires environment variables from `~/export-esp.sh`
-to avoid polluting `.zshrc`, the variables are set in `.env`
 
- '. /Users/mac/export-esp.sh'
-This step must be done every time you open a new terminal.
-See other methods for setting the environment in:
+Copy the content of `HOME/export-esp.sh` to the terminal configuration,
+example `.zshrc`
 
-<https://esp-rs.github.io/book/installation/riscv-and-xtensa.html#3-set-up-the-environment-variables>
+```sh
+cargo binstall esp-generate
+cargo binstall esp-flash
+cargo binstall probe-rs-tools
+```
+
+- checkpoint
+
+```sh
+xtensa-esp32-elf-gcc --version
+xtensa-esp-elf-gcc (crosstool-NG esp-15.2.0_20250920) 15.2.0
+```
 
 ## Crates
 
