@@ -1,21 +1,21 @@
 
-# USB to TTL serial driver for MacOS 
+# USB to TTL serial driver for MacOS
 
-The required driver for this board is `CH9102F` but the driver in 
+The required driver for this board is `CH9102F` but the driver in
 `../usb2ttl_driver/CH341SER_MAC.ZIP` also includes this chip model.
 
-Unzip the driver and open `CH34xVCPDriver.dmg` file 
+Unzip the driver and open `CH34xVCPDriver.dmg` file
 Drag and drop the file to `Application` like any other app.
 It will ask to give permission, this might change from on OS version to another,
 so check the PDF in the zip file.
 
 * Source:
 
-https://github.com/WCHSoftGroup/ch34xser_macos
+<https://github.com/WCHSoftGroup/ch34xser_macos>
 
 * Forum refrences:
 
-https://arduino.stackexchange.com/a/86787
+<https://arduino.stackexchange.com/a/86787>
 
 ## Select port
 
@@ -39,8 +39,8 @@ Both should work identically.
 
 ### As driver extensions (dexts) MacOS Sequoia 15.2
 
-Since macOS no longer allows third-party kernel extensions (kexts) easily, 
-driver developers have to use Driver Extensions (dexts). 
+Since macOS no longer allows third-party kernel extensions (kexts) easily,
+driver developers have to use Driver Extensions (dexts).
 These require user approval and special permission settings.
 
 Check if the driver is installed as extension blocked
@@ -59,13 +59,14 @@ see `System Settings > General > Login Items & Extensions > Driver Extensions`
 
 Check if the driver is loaded
 
-```sh 
+```sh
 systemextensionsctl list | grep -i ch34
 *       *       5JZGQTGU4W      cn.wch.CH34xVCPDriver (1.0/1)   cn.wch.CH34xVCPDriver   [activated enabled]
 ```
-At this point the driver might be activated but not shown in /dev/ 
 
-` ls -l /dev/tty.* /dev/cu.*`
+At this point the driver might be activated but not shown in /dev/
+
+`ls -l /dev/tty.* /dev/cu.*`
 
 In this case try to change the usb cable. Before I just used a regular USB-C cable
 to connect directly to ESP-32 UBS port, now I need a converter in between.
@@ -74,7 +75,7 @@ to connect directly to ESP-32 UBS port, now I need a converter in between.
 
 See the comments on this issue.
 
-https://github.com/espressif/arduino-esp32/issues/1084
+<https://github.com/espressif/arduino-esp32/issues/1084>
 
 ### As Kernel extensions (kexts) Previous MacOS versions
 
@@ -82,7 +83,7 @@ verify if the driver is installed
 
 `ls -l /Library/Extensions/ | grep -i ch34`
 
-or 
+or
 
 `ls -l /System/Library/Extensions/ | grep -i ch34`
 
@@ -92,7 +93,7 @@ Check if the driver is loaded
 
 `kmutil | grep ch34x`
 
-list all the loaded drivers, add grep if needed 
+list all the loaded drivers, add grep if needed
 
 `kmutil showloaded`
 
