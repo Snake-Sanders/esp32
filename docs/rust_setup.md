@@ -27,9 +27,6 @@ check if the following packages are installed with `cargo install --list`
 cargo install ldproxy
 ```
 
-Esp-IDF is also a dependency but this gets installed automatically when building
-`std`.
-
 ### Installation
 
 ```sh
@@ -49,6 +46,8 @@ cargo binstall esp-generate
 cargo binstall esp-flash
 cargo binstall probe-rs-tools
 ```
+
+Read more about [Probe-rs](https://probe.rs/docs/library/quickstart/).
 
 - checkpoint
 
