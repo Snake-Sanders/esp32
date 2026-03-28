@@ -97,4 +97,26 @@ list all the loaded drivers, add grep if needed
 
 `kmutil showloaded`
 
+## try to flash directly
 
+```
+espflash flash --monitor --chip esp32 ./target/xtensa-esp32-none-elf/debug/hello
+
+```
+
+this will ask you to chose the port,
+
+```
+espflash flash --monitor --chip esp32 ./target/xtensa-esp32-none-elf/debug/hello
+[2026-03-28T21:37:05Z INFO ] Detected 2 serial ports
+[2026-03-28T21:37:05Z INFO ] Ports which match a known common dev board are highlighted
+[2026-03-28T21:37:05Z INFO ] Please select a port
+❯ /dev/cu.usbserial-58AB0097191 - USB Single Serial
+  /dev/cu.wchusbserial58AB0097191 - USB Single Serial
+```
+
+The `cu.usbserial` should work:
+
+```
+espflash flash --monitor --chip esp32 --port /dev/cu.usbserial-58AB0097191 ./target/xtensa-esp32-none-elf/debug/hello
+```
