@@ -6,7 +6,7 @@ Install cross compiler target
 
 For ESP32 there are two micros, Xtensa and RISCV. The newer variants come with
 RISCV. To compile for these target a cross compiler is needed, this is `Espup`.
-About [espup](https://docs.esp-rs.org/book/installation/riscv-and-xtensa.html).
+About [espup](https://github.com/esp-rs/espup).
 
 > The old ESP32-TTGO uses Xtensa.
 
@@ -38,13 +38,31 @@ espup install
 
 `espup` requires environment variables from `~/export-esp.sh`
 
-Copy the content of `HOME/export-esp.sh` to the terminal configuration,
-example `.zshrc`
+Load the script in your `.zshrc` by adding the following line:
+
+```sh
+[[ -f "$HOME/export-esp.sh" ]] && source "$HOME/export-esp.sh"
+```
+
+## Other tools
 
 ```sh
 cargo binstall esp-generate
-cargo binstall esp-flash
+cargo binstall espflash
 cargo binstall probe-rs-tools
+```
+
+**Validate**
+
+```sh
+❯ esp-generate --version
+esp-generate 1.3.0
+
+❯ espflash --version
+espflash 4.4.0
+
+❯ probe-rs --version
+probe-rs 0.31.0 (git commit: 3de1cae)
 ```
 
 Read more about [Probe-rs](https://probe.rs/docs/library/quickstart/).
@@ -52,7 +70,7 @@ Read more about [Probe-rs](https://probe.rs/docs/library/quickstart/).
 - checkpoint
 
 ```sh
-xtensa-esp32-elf-gcc --version
+❯ xtensa-esp32-elf-gcc --version
 xtensa-esp-elf-gcc (crosstool-NG esp-15.2.0_20250920) 15.2.0
 ```
 
