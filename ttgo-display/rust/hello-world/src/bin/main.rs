@@ -7,12 +7,17 @@
 )]
 #![deny(clippy::large_stack_frames)]
 
-use defmt::info;
-use esp_backtrace as _;
+use defmt::{error, info};
 use esp_hal::clock::CpuClock;
 use esp_hal::main;
 use esp_hal::time::{Duration, Instant};
 use esp_println as _;
+
+#[panic_handler]
+fn panic(panic_info: &core::panic::PanicInfo) -> ! {
+    error!("{}", panic_info);
+    loop {}
+}
 
 // This creates a default app-descriptor required by the esp-idf bootloader.
 // For more information see: <https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/system/app_image_format.html#application-description>
@@ -25,7 +30,7 @@ esp_bootloader_esp_idf::esp_app_desc!();
 #[main]
 fn main() -> ! {
     // generator version: 1.3.0
-    // generator parameters: --chip esp32 -o esp-backtrace -o defmt -o neovim -o esp
+    // generator parameters: --chip esp32 -o defmt
 
     let config = esp_hal::Config::default().with_cpu_clock(CpuClock::max());
     let _peripherals = esp_hal::init(config);
