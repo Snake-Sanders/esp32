@@ -20,6 +20,7 @@ esp-println = { version = "0.17.0", features = ["defmt-espflash", "esp32"] }
 mipidsi = "0.10.0"
 embedded-graphics = "0.8.2"
 embedded-hal-bus = "0.3.0"
+static_cell = "2.1.1"
 
 
 # For fine tuning these settings, please refer to https://doc.rust-lang.org/cargo/reference/profiles.html
