@@ -2,7 +2,7 @@
 edition = "2024"
 name = "button-interrupt"
 rust-version = "1.88"
-version = "0.1.0"
+rersion = "0.1.2"
 
 [[bin]]
 name = "button-interrupt"

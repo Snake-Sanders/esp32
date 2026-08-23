@@ -2,7 +2,7 @@
 edition = "2024"
 name = "screen-calibration"
 rust-version = "1.88"
-version = "0.1.0"
+version = "0.1.5"
 description = "shows orientation points to calibrate the screen"
 
 [[bin]]

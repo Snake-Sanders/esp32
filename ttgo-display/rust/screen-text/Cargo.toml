@@ -2,7 +2,7 @@
 edition      = "2024"
 name         = "screen-text"
 rust-version = "1.88"
-version      = "0.1.0"
+version = "0.1.4"
 
 [[bin]]
 name = "screen-text"
