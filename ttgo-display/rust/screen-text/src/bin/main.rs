@@ -14,7 +14,7 @@ use defmt::{error, info};
 use embedded_graphics::{
     draw_target::DrawTarget,
     geometry::{Point, Size},
-    mono_font::{MonoTextStyle, ascii::FONT_10X20},
+    mono_font::{ascii::FONT_10X20, MonoTextStyle},
     pixelcolor::Rgb565,
     prelude::{RgbColor, *},
     primitives::{PrimitiveStyle, Rectangle},
@@ -26,8 +26,8 @@ use esp_hal::delay::Delay;
 use esp_hal::gpio::{Level, Output, OutputConfig};
 use esp_hal::main;
 use esp_hal::spi::{
-    Mode,
     master::{Config as SpiConfig, Spi},
+    Mode,
 };
 use esp_hal::time::Rate;
 use esp_println as _;
@@ -54,6 +54,7 @@ esp_bootloader_esp_idf::esp_app_desc!();
 fn main() -> ! {
     let config = esp_hal::Config::default().with_cpu_clock(CpuClock::max());
     let per = esp_hal::init(config);
+    info!("starting ESP");
     let mut delay = Delay::new();
 
     let mosi = per.GPIO19;
@@ -92,29 +93,15 @@ fn main() -> ! {
 
     let style = MonoTextStyle::new(&FONT_10X20, Rgb565::WHITE);
 
-    let pause = 5000;
-
     Rectangle::new(Point::new(0, 0), Size::new(240, 135))
         .into_styled(PrimitiveStyle::with_stroke(Rgb565::GREEN, 1))
         .draw(&mut display)
         .unwrap();
 
-    // TODO: implement display logs with defmt
-
-    let markers = [
-        ("Tl", Point::new(0, 20)),
-        ("Ml", Point::new(0, 70)),
-        ("Bl", Point::new(0, 125)),
-        ("C", Point::new(110, 70)),
-        ("Tr", Point::new(220, 20)),
-        ("Mr", Point::new(220, 70)),
-        ("Br", Point::new(220, 125)),
-    ];
-
     loop {
-        for (text, pos) in markers {
-            Text::new(text, pos, style).draw(&mut display).unwrap();
-        }
-        delay.delay_millis(pause);
+        Text::new("Hello ESP32", Point::new(0, 20), style)
+            .draw(&mut display)
+            .unwrap();
+        delay.delay_millis(10_000);
     }
 }
